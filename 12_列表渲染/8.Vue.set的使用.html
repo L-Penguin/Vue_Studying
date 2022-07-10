@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue监测数据改变的原理</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <h1>学校信息</h1>
+        <h2>学校名称：{{name}}</h2>
+        <h2>学校地址：{{address}}</h2>
+        <hr/>
+        <h1>学生信息</h1>
+        <button @click="addSex">添加一个性别属性，默认值是男</button>
+        <h2>姓名：{{student.name}}</h2>
+        <h2>年龄：真实{{student.age.rage}}，对外{{student.age.sage}}</h2>
+        <h2 v-if="student.sex">性别：{{student.sex}}</h2>
+        <h2>朋友们</h2>
+        <ul>
+            <li v-for="(f, index) in student.friends" :key = index>
+                {{f.name}}--{{f.age}}
+            </li>
+        </ul>
+    </div>
+    
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false    // 阻止 vue 在启动时生成生产提示。
+
+    const vm = new Vue({
+        el:'#root',
+        data:{
+            name: "南京邮电大学",
+            address: "南京",
+            student: {
+                name: "tom",
+                age: {
+                    rage: 20,
+                    sage: 18
+                },
+                friends: [
+                    {name: "jerry", age: 35},
+                    {name: "tony", age: 27}
+                ]
+            }
+        },
+        methods: {
+            addSex() {
+                // Vue.set(this.student, "sex", "男")   // 参数也可以是vm._data.student
+                this.$set(this.student, "sex", "男")    // 无法给vm或vm._data后添加响应式属性
+            }
+        },
+    })
+</script>
+</html>
